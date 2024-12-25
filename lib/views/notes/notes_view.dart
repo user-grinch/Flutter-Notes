@@ -17,7 +17,6 @@ class _NotesViewState extends State<NotesView> {
   @override
   void initState() {
     _notesService = NotesService();
-    _notesService.open();
     super.initState();
   }
 
@@ -31,8 +30,8 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Notes"),
-        elevation: 5,
+        title: const Text("Your Notes"),
+        elevation: 1,
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 30),
@@ -58,7 +57,38 @@ class _NotesViewState extends State<NotesView> {
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: const Text("Hello Flutter"),
+        child: FutureBuilder(
+          future: _notesService.getOrCreateUser(email: userEmail),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return StreamBuilder(
+                stream: _notesService.allNotes,
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                    case ConnectionState.active:
+                      return const Text("Waiting for all notes...");
+                    default:
+                      return const CircularProgressIndicator();
+                  }
+                },
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(newNoteRoute);
+        },
+        elevation: 1,
+        child: Icon(
+          Icons.add,
+          size: 30,
+        ),
       ),
     );
   }

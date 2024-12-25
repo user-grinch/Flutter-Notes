@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/firebase_options.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
 import 'package:flutter1/views/login_view.dart';
-import 'package:flutter1/views/notes_view.dart';
+import 'package:flutter1/views/notes/new_note_view.dart';
+import 'package:flutter1/views/notes/notes_view.dart';
 import 'package:flutter1/views/register_view.dart';
 import 'package:flutter1/views/verify_email_view.dart';
 import 'dart:developer' as devtools show log;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent));
   runApp(MaterialApp(
     title: 'Flutter Demo',
     theme: ThemeData(
@@ -21,6 +28,7 @@ void main() {
       reigsterRoute: (context) => RegisterView(),
       notesRoute: (context) => NotesView(),
       verifyEmailRoute: (context) => VerifyEmailView(),
+      newNoteRoute: (context) => const NewNoteView(),
     },
   ));
 }
