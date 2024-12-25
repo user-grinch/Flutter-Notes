@@ -40,7 +40,6 @@ class FirebaseAuthProvider implements AuthProviders {
   }
 
   @override
-  // TODO: implement currentUser
   AuthUser? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
