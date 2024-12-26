@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ElevatedButtonMD3 extends StatefulWidget {
-  final String text;
+class ElevatedButtonMD3 extends StatelessWidget {
+  final Widget? child;
   final VoidCallback onPressed;
 
   const ElevatedButtonMD3({
     super.key,
-    required this.text,
+    required this.child,
     required this.onPressed,
   });
 
-  @override
-  State<ElevatedButtonMD3> createState() => _ElevatedButtonMD3State();
-}
-
-class _ElevatedButtonMD3State extends State<ElevatedButtonMD3> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -26,8 +21,8 @@ class _ElevatedButtonMD3State extends State<ElevatedButtonMD3> {
         ),
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
-      onPressed: widget.onPressed,
-      child: Text(widget.text),
+      onPressed: onPressed,
+      child: child,
     );
   }
 }

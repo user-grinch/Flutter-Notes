@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
+import 'package:flutter1/utilities/dialogs/logout_dialog.dart';
 import 'package:flutter1/utilities/elevated_button.dart';
-import 'package:flutter1/utilities/outlined_button.dart';
 import 'package:flutter1/utilities/toggle_button.dart';
 
 class SettingsView extends StatefulWidget {
@@ -54,11 +54,11 @@ class _SettingsViewState extends State<SettingsView> {
                     children: [
                       ElevatedButtonMD3(
                         onPressed: logOutHandler,
-                        text: 'Privacy Policy',
+                        child: Text('Privacy Policy'),
                       ),
                       ElevatedButtonMD3(
                         onPressed: logOutHandler,
-                        text: 'Log Out',
+                        child: Text('Log Out'),
                       ),
                     ],
                   ),
@@ -77,28 +77,4 @@ class _SettingsViewState extends State<SettingsView> {
               ]),
         ));
   }
-}
-
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            title: const Text("Confirm"),
-            content: const Text("Are you sure you want to Logout?"),
-            actions: [
-              OutlinedButtonMD3(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                text: "Cancel",
-              ),
-              ElevatedButtonMD3(
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-                text: 'Yes',
-              )
-            ]);
-      }).then((value) => value ?? false);
 }

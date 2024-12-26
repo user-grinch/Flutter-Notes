@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
 import 'package:flutter1/services/crud/notes_service.dart';
-import 'package:flutter1/utilities/note_summary.dart';
+import 'package:flutter1/views/notes/notes_list_view.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -51,20 +51,7 @@ class _NotesViewState extends State<NotesView> {
                     case ConnectionState.active:
                       if (snapshot.hasData) {
                         final allNotes = snapshot.data as List<DatabaseNote>;
-                        return ListView.builder(
-                          itemCount: allNotes.length,
-                          itemBuilder: (context, index) {
-                            final note = allNotes[index];
-                            return NoteSummary(
-                                text: note.text,
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed(
-                                    newNoteRoute,
-                                    arguments: note,
-                                  );
-                                });
-                          },
-                        );
+                        return NotesListView(notes: allNotes);
                       } else {
                         return CircularProgressIndicator();
                       }
@@ -81,7 +68,7 @@ class _NotesViewState extends State<NotesView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(newNoteRoute);
+          Navigator.of(context).pushNamed(createUpdateNoteRoute);
         },
         elevation: 1,
         child: Icon(

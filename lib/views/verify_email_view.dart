@@ -33,7 +33,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
                   final user = AuthService.firebase().currentUser;
                   await AuthService.firebase().sendEmailVerification();
                 },
-                text: 'Resend Verification'),
+                child: Text('Resend Verification')),
             TextButton(
               onPressed: () async {
                 await AuthService.firebase().logOut();

@@ -19,7 +19,6 @@ class NotesService {
       },
     );
   }
-
   factory NotesService() => _shared;
 
   late final StreamController<List<DatabaseNote>> _notesStreamController;
@@ -112,15 +111,19 @@ class NotesService {
   Future<void> deleteNote({required int id}) async {
     await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
+    print(db);
     final deletedCount = await db.delete(
       noteTable,
       where: 'id = ?',
       whereArgs: [id],
     );
+    print(db);
     if (deletedCount == 0) {
       throw CouldNotDeleteNote();
     } else {
+      print(_notes);
       _notes.removeWhere((note) => note.id == id);
+      print(db);
       _notesStreamController.add(_notes);
     }
   }

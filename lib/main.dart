@@ -4,7 +4,7 @@ import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/firebase_options.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
 import 'package:flutter1/views/login_view.dart';
-import 'package:flutter1/views/notes/new_note_view.dart';
+import 'package:flutter1/views/notes/create_update_note_view.dart';
 import 'package:flutter1/views/notes/notes_view.dart';
 import 'package:flutter1/views/register_view.dart';
 import 'package:flutter1/views/settings_view.dart';
@@ -37,7 +37,7 @@ void main() {
       reigsterRoute: (context) => RegisterView(),
       notesRoute: (context) => NotesView(),
       verifyEmailRoute: (context) => VerifyEmailView(),
-      newNoteRoute: (context) => const NewNoteView(),
+      createUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       settingsRoute: (context) => const SettingsView(),
     },
   ));
