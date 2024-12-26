@@ -3,6 +3,7 @@ import 'dart:developer' as devtools show log;
 
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
+import 'package:flutter1/utilities/elevated_button.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -27,20 +28,12 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             SizedBox(
               height: 50,
             ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                ),
+            ElevatedButtonMD3(
                 onPressed: () async {
                   final user = AuthService.firebase().currentUser;
                   await AuthService.firebase().sendEmailVerification();
                 },
-                child: const Text("Resend Verifciation")),
+                text: 'Resend Verification'),
             TextButton(
               onPressed: () async {
                 await AuthService.firebase().logOut();

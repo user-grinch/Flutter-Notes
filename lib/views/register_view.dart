@@ -3,6 +3,7 @@ import 'dart:developer' as devtools show log;
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/services/auth/auth_exceptions.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
+import 'package:flutter1/utilities/elevated_button.dart';
 import 'package:flutter1/utilities/show_error_dialog.dart';
 
 class RegisterView extends StatefulWidget {
@@ -68,15 +69,7 @@ class _RegisterViewState extends State<RegisterView> {
           SizedBox(
             height: 50,
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            ),
+          ElevatedButtonMD3(
             onPressed: () async {
               try {
                 final email = _email.text;
@@ -108,7 +101,7 @@ class _RegisterViewState extends State<RegisterView> {
                 );
               }
             },
-            child: const Text("Register"),
+            text: 'Register',
           ),
           TextButton(
             onPressed: () {

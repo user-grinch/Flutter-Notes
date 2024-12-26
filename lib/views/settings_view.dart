@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
+import 'package:flutter1/utilities/elevated_button.dart';
+import 'package:flutter1/utilities/outlined_button.dart';
 import 'package:flutter1/utilities/toggle_button.dart';
 
 class SettingsView extends StatefulWidget {
@@ -50,31 +52,13 @@ class _SettingsViewState extends State<SettingsView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
+                      ElevatedButtonMD3(
                         onPressed: logOutHandler,
-                        child: const Text("Privacy Policy"),
+                        text: 'Privacy Policy',
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
+                      ElevatedButtonMD3(
                         onPressed: logOutHandler,
-                        child: const Text("Logout"),
+                        text: 'Log Out',
                       ),
                     ],
                   ),
@@ -103,29 +87,17 @@ Future<bool> showLogOutDialog(BuildContext context) {
             title: const Text("Confirm"),
             content: const Text("Are you sure you want to Logout?"),
             actions: [
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
+              OutlinedButtonMD3(
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
-                child: const Text("Cancel"),
+                text: "Cancel",
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
+              ElevatedButtonMD3(
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
-                child: const Text("Yes"),
+                text: 'Yes',
               )
             ]);
       }).then((value) => value ?? false);

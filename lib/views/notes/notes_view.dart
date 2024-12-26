@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
 import 'package:flutter1/services/crud/notes_service.dart';
+import 'package:flutter1/utilities/note_summary.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -30,12 +31,6 @@ class _NotesViewState extends State<NotesView> {
         actions: [
           IconButton(
             icon: Icon(Icons.settings_rounded),
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 15),
-            ),
             onPressed: () async {
               Navigator.of(context).pushNamed(settingsRoute);
             },
@@ -60,45 +55,19 @@ class _NotesViewState extends State<NotesView> {
                           itemCount: allNotes.length,
                           itemBuilder: (context, index) {
                             final note = allNotes[index];
-                            return Card(
-                              elevation: 0,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
-                                title: Text(
-                                  note.text,
-                                  maxLines: 1,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                ),
-                                onTap: () {
+                            return NoteSummary(
+                                text: note.text,
+                                onPressed: () {
                                   Navigator.of(context).pushNamed(
                                     newNoteRoute,
                                     arguments: note,
                                   );
-                                },
-                                trailing: const Icon(Icons.chevron_right),
-                              ),
-                            );
+                                });
                           },
                         );
                       } else {
                         return CircularProgressIndicator();
                       }
-
                     default:
                       return const CircularProgressIndicator();
                   }
