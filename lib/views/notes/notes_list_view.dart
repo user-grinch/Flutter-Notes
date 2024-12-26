@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/constants/routes.dart';
+import 'package:flutter1/services/cloud/cloud_note.dart';
 import 'package:flutter1/services/crud/notes_service.dart';
 
-typedef DeleteNoteCallback = void Function(DatabaseNote note);
-
 class NotesListView extends StatelessWidget {
-  final List<DatabaseNote> notes;
+  final Iterable<CloudNote> notes;
 
   const NotesListView({super.key, required this.notes});
 
@@ -14,7 +13,7 @@ class NotesListView extends StatelessWidget {
     return ListView.builder(
       itemCount: notes.length,
       itemBuilder: (context, index) {
-        final note = notes[index];
+        final note = notes.elementAt(index);
         return Card(
           elevation: 0,
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

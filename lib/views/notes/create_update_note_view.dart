@@ -2,9 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
-import 'package:flutter1/services/crud/notes_service.dart';
 import 'package:flutter1/utilities/elevated_button.dart';
 import 'package:flutter1/utilities/generics/get_argument.dart';
+import 'package:flutter1/services/cloud/cloud_note.dart';
+import 'package:flutter1/services/cloud/cloud_storage_constants.dart';
+import 'package:flutter1/services/cloud/cloud_storage_exceptions.dart';
+import 'package:flutter1/services/cloud/firebase_cloud_storage.dart';
 
 class CreateUpdateNoteView extends StatefulWidget {
   const CreateUpdateNoteView({super.key});
@@ -14,22 +17,25 @@ class CreateUpdateNoteView extends StatefulWidget {
 }
 
 class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
-  DatabaseNote? _note;
-  late final NotesService _notesService;
+  CloudNote? _note;
+  late final FirebaseCloudStorage _notesService;
   late final TextEditingController _textController;
 
   @override
   void initState() {
-    _notesService = NotesService();
+    _notesService = FirebaseCloudStorage();
     _textController = TextEditingController();
     super.initState();
   }
 
   void _textControllerListener() async {
-    final text = _textController.text;
+    final note = _note;
+    if (note == null) {
+      return;
+    }
     await _notesService.updateNote(
-      note: _note!,
-      text: text,
+      documentId: note.documentId,
+      text: _textController.text,
     );
   }
 
@@ -38,8 +44,8 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
     _textController.addListener(_textControllerListener);
   }
 
-  Future<DatabaseNote> createOrGetExistingNote(BuildContext context) async {
-    final widgetNote = context.getArgument<DatabaseNote>();
+  Future<CloudNote> createOrGetExistingNote(BuildContext context) async {
+    final widgetNote = context.getArgument<CloudNote>();
 
     if (widgetNote != null) {
       _note = widgetNote;
@@ -52,9 +58,8 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
         return existingNote;
       }
       final currentUser = AuthService.firebase().currentUser!;
-      final email = currentUser.email;
-      final owner = await _notesService.getUser(email: email);
-      final newNote = await _notesService.createNote(owner: owner);
+      final newNote =
+          await _notesService.createNewNote(ownerUserid: currentUser.id);
       _note = newNote;
       return newNote;
     }
@@ -63,7 +68,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
   void _deleteNoteIfTextIsEmpty() {
     final note = _note;
     if (_textController.text.isEmpty && note != null) {
-      _notesService.deleteNote(id: note.id);
+      _notesService.deleteNote(documentId: note.documentId);
     }
   }
 
@@ -71,7 +76,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
     final note = _note;
     if (_textController.text.isNotEmpty && note != null) {
       await _notesService.updateNote(
-        note: note,
+        documentId: note.documentId,
         text: _textController.text,
       );
     }
@@ -129,7 +134,8 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
                       children: [
                         ElevatedButtonMD3(
                           onPressed: () async {
-                            await _notesService.deleteNote(id: _note!.id);
+                            await _notesService.deleteNote(
+                                documentId: _note!.documentId);
                             Navigator.of(context).pop();
                           },
                           child: Row(
@@ -166,7 +172,7 @@ class _CreateUpdateNoteViewState extends State<CreateUpdateNoteView> {
                 ),
               );
             } else {
-              return const CircularProgressIndicator();
+              return const LinearProgressIndicator();
             }
           }),
     );
