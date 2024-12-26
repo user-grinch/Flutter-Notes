@@ -7,6 +7,7 @@ import 'package:flutter1/views/login_view.dart';
 import 'package:flutter1/views/notes/new_note_view.dart';
 import 'package:flutter1/views/notes/notes_view.dart';
 import 'package:flutter1/views/register_view.dart';
+import 'package:flutter1/views/settings_view.dart';
 import 'package:flutter1/views/verify_email_view.dart';
 import 'dart:developer' as devtools show log;
 
@@ -23,12 +24,15 @@ void main() {
       useMaterial3: true,
     ),
     home: const HomePage(),
+    darkTheme: ThemeData.dark(),
+    themeMode: ThemeMode.system,
     routes: {
       loginRoute: (context) => LoginView(),
       reigsterRoute: (context) => RegisterView(),
       notesRoute: (context) => NotesView(),
       verifyEmailRoute: (context) => VerifyEmailView(),
       newNoteRoute: (context) => const NewNoteView(),
+      settingsRoute: (context) => const SettingsView(),
     },
   ));
 }

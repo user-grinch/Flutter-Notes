@@ -21,37 +21,24 @@ class _NotesViewState extends State<NotesView> {
   }
 
   @override
-  void dispose() {
-    _notesService.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Your Notes"),
-        elevation: 1,
+        title: const Text("Your Notes", style: TextStyle(fontSize: 32)),
+        centerTitle: true,
+        elevation: 0,
         actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 30),
-            child: OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 15),
+          IconButton(
+            icon: Icon(Icons.settings_rounded),
+            style: OutlinedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
               ),
-              onPressed: () async {
-                final shouldLogout = await showLogOutDialog(context);
-                if (shouldLogout) {
-                  await AuthService.firebase().logOut();
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(loginRoute, (_) => false);
-                }
-              },
-              child: Text("Logout"),
+              padding: EdgeInsets.symmetric(horizontal: 15),
             ),
+            onPressed: () async {
+              Navigator.of(context).pushNamed(settingsRoute);
+            },
           ),
         ],
       ),
@@ -65,10 +52,53 @@ class _NotesViewState extends State<NotesView> {
                 stream: _notesService.allNotes,
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
-                    case ConnectionState.none:
                     case ConnectionState.waiting:
                     case ConnectionState.active:
-                      return const Text("Waiting for all notes...");
+                      if (snapshot.hasData) {
+                        final allNotes = snapshot.data as List<DatabaseNote>;
+                        return ListView.builder(
+                          itemCount: allNotes.length,
+                          itemBuilder: (context, index) {
+                            final note = allNotes[index];
+                            return Card(
+                              elevation: 0,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
+                                title: Text(
+                                  note.text,
+                                  maxLines: 1,
+                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    newNoteRoute,
+                                    arguments: note,
+                                  );
+                                },
+                                trailing: const Icon(Icons.chevron_right),
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+
                     default:
                       return const CircularProgressIndicator();
                   }
@@ -92,40 +122,4 @@ class _NotesViewState extends State<NotesView> {
       ),
     );
   }
-}
-
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-            title: const Text("Confirm"),
-            content: const Text("Are you sure you want to Logout?"),
-            actions: [
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: const Text("Cancel"),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-                child: const Text("Yes"),
-              )
-            ]);
-      }).then((value) => value ?? false);
 }
