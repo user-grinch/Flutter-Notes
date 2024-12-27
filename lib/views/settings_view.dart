@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/services/auth/auth_service.dart';
+import 'package:flutter1/services/auth/bloc/auth_bloc.dart';
+import 'package:flutter1/services/auth/bloc/auth_event.dart';
 import 'package:flutter1/utilities/dialogs/logout_dialog.dart';
 import 'package:flutter1/utilities/elevated_button.dart';
 import 'package:flutter1/utilities/toggle_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -13,14 +16,6 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  void logOutHandler() async {
-    final shouldLogout = await showLogOutDialog(context);
-    if (shouldLogout) {
-      await AuthService.firebase().logOut();
-      Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (_) => false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +48,18 @@ class _SettingsViewState extends State<SettingsView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButtonMD3(
-                        onPressed: logOutHandler,
+                        onPressed: () {},
                         child: Text('Privacy Policy'),
                       ),
                       ElevatedButtonMD3(
-                        onPressed: logOutHandler,
+                        onPressed: () async {
+                          final shouldLogout = await showLogOutDialog(context);
+                          if (shouldLogout) {
+                            context.read<AuthBloc>().add(
+                                  const AuthEventLogout(),
+                                );
+                          }
+                        },
                         child: Text('Log Out'),
                       ),
                     ],
