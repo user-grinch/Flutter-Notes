@@ -91,6 +91,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    // should register
+    on<AuthEventShouldRegister>((event, emit) async {
+      emit(const AuthStateRegistering(exception: null, isLoading: false));
+    });
+
     // logout
     on<AuthEventLogout>((event, emit) async {
       try {

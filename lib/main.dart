@@ -22,31 +22,29 @@ void main() {
       statusBarColor: Colors.transparent,
       systemNavigationBarColor: Colors.transparent));
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(
-    title: 'Quick Notes',
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
-      pageTransitionsTheme: const PageTransitionsTheme(
-        builders: <TargetPlatform, PageTransitionsBuilder>{
-          // Set the predictive back transitions for Android.
-          TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
-        },
+
+  runApp(BlocProvider<AuthBloc>(
+    create: (context) => AuthBloc(FirebaseAuthProvider()),
+    child: MaterialApp(
+      title: 'Quick Notes',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            // Set the predictive back transitions for Android.
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          },
+        ),
       ),
+      home: const HomePage(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+      routes: {
+        createUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
+        settingsRoute: (context) => const SettingsView(),
+      },
     ),
-    home: BlocProvider<AuthBloc>(
-      create: (context) => AuthBloc(FirebaseAuthProvider()),
-      child: const HomePage(),
-    ),
-    darkTheme: ThemeData.dark(),
-    themeMode: ThemeMode.system,
-    routes: {
-      createUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
-      settingsRoute: (context) => BlocProvider.value(
-            value: context.read<AuthBloc>(),
-            child: const SettingsView(),
-          ),
-    },
   ));
 }
 

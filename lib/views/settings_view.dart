@@ -58,6 +58,7 @@ class _SettingsViewState extends State<SettingsView> {
                             context.read<AuthBloc>().add(
                                   const AuthEventLogout(),
                                 );
+                            Navigator.of(context).pop();
                           }
                         },
                         child: Text('Log Out'),

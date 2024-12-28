@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/constants/routes.dart';
 import 'package:flutter1/services/cloud/cloud_note.dart';
-import 'package:flutter1/services/crud/notes_service.dart';
 
 class NotesListView extends StatelessWidget {
   final Iterable<CloudNote> notes;
