@@ -1,16 +1,12 @@
-# flutter1
+# Quick Notes
+A basic notes application made with Flutter
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Preview
+<details>
+  <summary>Show Images</summary>
+  <img src="https://raw.githubusercontent.com/user-grinch/Flutter-Notes/main/images/1.jpg">
+  <img src="https://raw.githubusercontent.com/user-grinch/Flutter-Notes/main/images/2.jpg">
+  <img src="https://raw.githubusercontent.com/user-grinch/Flutter-Notes/main/images/3.jpg">
+  <img src="https://raw.githubusercontent.com/user-grinch/Flutter-Notes/main/images/4.jpg">
+  <img src="https://raw.githubusercontent.com/user-grinch/Flutter-Notes/main/images/5.jpg">
+</details>
