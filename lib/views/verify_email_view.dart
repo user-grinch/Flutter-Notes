@@ -18,30 +18,32 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "We've send you an email verification. Please verify your email to continue.",
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            ElevatedButtonMD3(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "We've send you an email verification. Please verify your email to continue.",
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              ElevatedButtonMD3(
+                  onPressed: () {
+                    context
+                        .read<AuthBloc>()
+                        .add(const AuthEventSendEmailVerification());
+                  },
+                  child: Text('Resend Verification')),
+              TextButton(
                 onPressed: () {
-                  context
-                      .read<AuthBloc>()
-                      .add(const AuthEventSendEmailVerification());
+                  context.read<AuthBloc>().add(const AuthEventLogout());
                 },
-                child: Text('Resend Verification')),
-            TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(const AuthEventLogout());
-              },
-              child: const Text("Go Back"),
-            )
-          ],
+                child: const Text("Go Back"),
+              )
+            ],
+          ),
         ),
       ),
     );

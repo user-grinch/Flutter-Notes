@@ -47,45 +47,60 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       child: Scaffold(
         body: Padding(
           padding: EdgeInsets.all(50.0),
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              "Pasword Reset",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
+          child: SingleChildScrollView(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SizedBox(
+                height: 50,
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: _controller,
-              enableSuggestions: false,
-              autocorrect: false,
-              autofocus: true,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                hintText: 'Email',
+              Image.asset(
+                "assets/icon/icon.png",
+                width: 100,
+                height: 100,
+                fit: BoxFit.contain,
               ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            ElevatedButtonMD3(
-              onPressed: () async {
-                final email = _controller.text;
-                context.read<AuthBloc>().add(AuthEventForgotPassword(email));
-              },
-              child: Text('Send Email'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(AuthEventLogout());
-              },
-              child: const Text("Login"),
-            )
-          ]),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Pasword Reset",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: _controller,
+                enableSuggestions: false,
+                autocorrect: false,
+                autofocus: true,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  hintText: 'Email',
+                ),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              ElevatedButtonMD3(
+                onPressed: () async {
+                  final email = _controller.text;
+                  context.read<AuthBloc>().add(AuthEventForgotPassword(email));
+                },
+                child: Text('Send Email'),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(AuthEventLogout());
+                },
+                child: const Text("Login"),
+              )
+            ]),
+          ),
         ),
       ),
     );
